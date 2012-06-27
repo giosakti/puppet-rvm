@@ -5,6 +5,6 @@ class rvm::system($version='latest') {
     creates => '/usr/local/rvm/bin/rvm',
     require => [
       Class['rvm::dependencies'],
-    ],
+    ];
   }
 }

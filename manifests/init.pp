@@ -1,18 +1,22 @@
 class rvm($version='latest', $install_rvm=true) {
-  stage { 'rvm-install': before => Stage['main'] }
-
   if $install_rvm {
     class {
-      'rvm::dependencies': stage => 'rvm-install';
-      'rvm::system':       stage => 'rvm-install', version => $version;
+      'rvm::dependencies': stage => pre;
+      'rvm::system': stage => pre, version => $version;
     }
     file { "/etc/gemrc":
-      ensure => file,
-      content => template('rvm/gemrc')
+      ensure => present,
+      owner => root,
+      group => root,
+      mode => 664,
+      source => "puppet:///modules/rvm/gemrc"
     }
     file { "/etc/rvmrc":
-      ensure => file,
-      content => template('rvm/rvmrc')
+      ensure => present,
+      owner => root,
+      group => root,
+      mode => 664,
+      source => "puppet:///modules/rvm/rvmrc"
     }
   }
 }
